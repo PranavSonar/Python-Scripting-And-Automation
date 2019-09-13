@@ -1,0 +1,14 @@
+My Client ID 
+CLIENT ID   xxxxxxxxxxxxxxxxxxxxxxxxx	
+To Get Access token
+https://api.instagram.com/oauth/authorize/?
+client_id=xxxxxxxxxxxxxx(edit it by your clint id)
+&redirect_uri=(edit it by your Redirect url)
+&response_type=token
+&scope=basic+public_content+likes+comments
+paste to top url into browser and it will provide your an #access_token
+
+Instagram's API, the base url is : 'https://api.instagram.com/v1/'
+
+to get self info 
+https://api.instagram.com/v1/users/self/?access_token=ACCESS-TOKEN

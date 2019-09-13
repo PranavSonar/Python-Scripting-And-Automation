@@ -1,0 +1,4 @@
+https://www.instagram.com/developer/
+https://docs.google.com/document/d/1U0UQ79uMTLvM3e6CJmudhyyfrNYPsesbAWEKsbcWJpE/edit
+https://textblob.readthedocs.io/en/dev/quickstart.html#sentiment-analysis
+http://docs.python-requests.org/en/master/

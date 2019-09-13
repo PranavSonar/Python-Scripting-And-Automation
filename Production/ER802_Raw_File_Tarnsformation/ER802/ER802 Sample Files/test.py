@@ -1,0 +1,114 @@
+import os, shutil, re
+from glob import glob
+
+# file_path = '<%=odiRef.getOption( "P_FILE_PATH" )%>'.strip()
+# filename = '<%=odiRef.getOption( "P_FILE_NAME" )%>'.strip()
+# gitting file path and file name which want to read
+file_path = "C:/Users/Vivek Kumar/Google Drive/shared_with_me/Implementation/src/odi/{DEVISON}_file_development/vlr/{DEVISON}/Test"
+filename = "{ORG} {Devison}oa MSC VLR Dump with IMEI 110418.log".strip()
+# creating new file with {Devison}e name .txt on {Devison}e dir
+new_filename = filename.replace('.log', '.txt')
+new_file = os.path.join(file_path, os.path.basename(new_filename))
+# Go to files directory and read the file
+os.chdir(file_path)
+fp = open(filename, 'r')
+nfp = open(new_filename, "w")
+# setting initially all variable value false or null
+part_1_flag = False
+part_2_flag = False
+part_3_flag = False
+imsi = ''
+msisdn = ''
+state = ''
+date = ''
+time = ''
+cgi = ''
+imei = ''
+current_record = ''
+complete_record = ''
+# Start reading the complete file
+for line in fp.readlines():
+    # remove extra space from begging and ending place of line
+    line = line.strip()
+    # if next read line true for any
+    if part_1_flag:
+        # split the current line and store the length
+        part_1 = line.split()
+        part_length = part_1.__len__()
+        # check if required field are available
+        # if available then put each of them in respective variable
+        if part_length >= 3:
+            imsi = str(part_1[0].strip())
+            msisdn = str(part_1[1].strip())
+            state = str(part_1[2].strip())
+        elif part_length == 2:
+            imsi = str(part_1[0].strip())
+            msisdn = str(part_1[1].strip())
+        elif part_length == 1:
+            imsi = str(part_1[0].strip())
+        # after reading line it set flag to false for next all line
+        part_1_flag = False
+
+    if part_2_flag:
+        part_2 = line.split()
+        part_length = part_2.__len__()
+        if part_length >= 3:
+            date = str(part_2[0].strip())
+            time = str(part_2[1].strip())
+            cgi = str(part_2[2].strip())
+        elif part_length == 2:
+            date = str(part_2[0].strip())
+            time = str(part_2[1].strip())
+        elif part_length == 1:
+            date = str(part_2[0].strip())
+        part_2_flag = False
+
+    if part_3_flag:
+        part_3 = line.strip()
+        part_length = part_3.__len__()
+        # checking if part_3 having some value
+        if part_length:
+            imei = str(part_3.strip())
+        part_3_flag = False
+
+    # check if current_record starting pointer found set all variable value false or null
+    if '<MGSSP:IMSI' in line:
+        # print 'start found : ' + line
+        imsi = ''
+        msisdn = ''
+        state = ''
+        date = ''
+        time = ''
+        cgi = ''
+        imei = ''
+        current_record = ''
+        part_1_flag = False
+        part_2_flag = False
+        part_3_flag = False
+    # check if required field found in line then set read next line true
+    if 'IMSI             MSISDN           STATE' in line:
+        part_1_flag = True
+    elif 'DATE             TIME             CGI' in line:
+        part_2_flag = True
+    elif 'IMEISV' in line:
+        part_3_flag = True
+    # checking if current_record ending pointer meet
+    elif 'END' in line:
+        # print 'END found : ' + line
+        # it will form current complete record and add it to complete_record
+        current_record = str(
+            imsi + ',' + msisdn + ',' + state + ',' + date + ',' + time + ',' + cgi + ',' + imei + '\n')
+        complete_record += current_record
+
+    # other then start,end or required line it will skip line
+    else:
+        # print 'Current processing : ' + line
+        pass
+
+# print current_record
+print complete_record
+nfp.write(complete_record)
+
+nfp.close()
+fp.close()
+
