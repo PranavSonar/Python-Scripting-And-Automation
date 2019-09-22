@@ -252,13 +252,13 @@ def summer_69(arr):
     return sum
 
 
-# Check
+# # Check
 # summer_69([1, 3, 5])
 
-# # Check
+# # # Check
 # summer_69([4, 5, 6, 7, 8, 9])
 
-# # Check
+# # # Check
 # summer_69([2, 1, 6, 9, 11])
 
 """# CHALLENGING PROBLEMS
@@ -268,12 +268,13 @@ def summer_69(arr):
      spy_game([1,2,4,0,0,7,5]) --> True
      spy_game([1,0,2,4,0,5,7]) --> True
      spy_game([1,7,2,0,4,5,0]) --> False
-"""
+# """
 def spy_game(nums):
-    pass
+    for i in range(len(nums)-3):
+        return nums[i]==0 and 0 in nums[i:] and 7 in nums[i:]
 
-# Check
-spy_game([1, 2, 4, 0, 0, 7, 5])
+# # Check
+print(spy_game([1, 2, 4, 0, 0, 7, 5]))
 
 # Check
 spy_game([1, 0, 2, 4, 0, 5, 7])
