@@ -12,3 +12,5 @@ for fn in os.listdir(dir_path):
 			data=mf.read()
 			keep.createNote(fn.replace('.txt',''), data)
 			keep.sync();
+
+			
